@@ -4,7 +4,7 @@
 const APP = "https://will-011114.github.io/budongsan-tax";
 const ALLOWED_ORIGINS = ["https://will-011114.github.io"];
 // 무료 등급 모델을 차례로 시도 (없거나 한도 초과면 다음 모델)
-const MODELS = ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite", "gemini-3.5-flash", "gemini-flash-lite-latest"];
+const MODELS = ["gemini-flash-lite-latest", "gemini-3.1-flash-lite", "gemini-3.5-flash-lite", "gemini-3.5-flash"];
 const TIMEOUT_MS = 25000; // 모델 하나당 최대 대기 시간
 
 const SYSTEM = (rules, guide, updates) => `너는 "부동산 세금 노트" 앱의 상담 도우미야. 사용자는 부동산 업계에서 일하는 분이야.
