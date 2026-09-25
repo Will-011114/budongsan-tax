@@ -244,12 +244,14 @@
     const w = bubble("bot wait", "답변을 준비하고 있어요…");
     send.disabled = true;
     try {
-      const r = await fetch(CHAT.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history }) });
+      const ctrl = new AbortController(); const tm = setTimeout(() => ctrl.abort(), 90000);
+      const slow = setTimeout(() => { w.textContent = "조금만 더 기다려 주세요… 답변을 정리하고 있어요."; }, 12000);
+      const r = await fetch(CHAT.endpoint, { method: "POST", signal: ctrl.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history }) }).finally(() => { clearTimeout(tm); clearTimeout(slow); });
       const d = await r.json().catch(() => ({}));
       w.remove();
       if (r.ok && d.text) { bubble("bot", d.text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/^#+\s*/gm, "")); history.push({ role: "assistant", text: d.text }); }
       else { bubble("err", d.error || "답변을 받지 못했어요. 잠시 후 다시 시도해 주세요."); history.pop(); }
-    } catch (e) { w.remove(); bubble("err", "인터넷 연결을 확인해 주세요."); history.pop(); }
+    } catch (e) { w.remove(); bubble("err", e.name === "AbortError" ? "답변이 너무 오래 걸려서 멈췄어요. 잠시 후 다시 물어봐 주세요." : "인터넷 연결을 확인해 주세요."); history.pop(); }
     send.disabled = false;
   }
   $("#chat-form").addEventListener("submit", e => { e.preventDefault(); const q = input.value.trim(); if (!q || send.disabled) return; input.value = ""; ask(q); });

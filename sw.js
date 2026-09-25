@@ -1,5 +1,5 @@
 // 항상 최신 데이터를 먼저 받고, 인터넷이 안 되면 저장해둔 걸 보여줌
-const CACHE = "sejeum-v2";
+const CACHE = "sejeum-v3";
 const CORE = ["./", "index.html", "app.js", "calc.js", "manifest.webmanifest", "icon.svg",
   "data/tax-rules.json", "data/guide.json", "data/updates.json", "data/chat-config.json"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); self.skipWaiting(); });
