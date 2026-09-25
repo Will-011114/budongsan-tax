@@ -85,6 +85,18 @@ mark{background:#ffe58a;color:inherit;border-radius:3px}
 .upd a{font-size:14px;color:var(--accent)}
 .areas{font-size:14px;color:var(--muted);padding-top:10px;border-top:1px solid var(--line)}
 .areas summary{color:var(--accent);font-weight:600;cursor:pointer}
+.msg{margin:0 0 12px;padding:12px 14px;border-radius:14px;max-width:88%;white-space:pre-wrap;word-break:break-word;font-size:16px}
+.msg.user{background:var(--accent);color:#fff;margin-left:auto;border-bottom-right-radius:4px}
+@media (prefers-color-scheme: dark){ .msg.user{color:#0c1f1d} }
+.msg.bot{background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.err{background:var(--warn-soft);color:var(--warn)}
+.msg.wait{color:var(--muted)}
+.suggest{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.suggest button{text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px;font:inherit;font-size:15px}
+#chat-form{position:sticky;bottom:calc(72px + env(safe-area-inset-bottom));display:flex;gap:8px;background:var(--bg);padding:8px 0}
+#chat-input{flex:1;font:inherit;font-size:17px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);resize:none}
+#chat-send{border:0;background:var(--accent);color:#fff;border-radius:12px;padding:0 16px;font:inherit;font-weight:700}
+#chat-send:disabled{opacity:.5}
 .hidden{display:none!important}
 .offline{font-size:13px;color:var(--warn)}
 </style>
@@ -114,6 +126,16 @@ mark{background:#ffe58a;color:inherit;border-radius:3px}
     <div id="guide-body"></div>
   </section>
 
+  <!-- 질문하기 -->
+  <section id="tab-chat" class="hidden">
+    <div id="chat-log" aria-live="polite"></div>
+    <form id="chat-form" autocomplete="off">
+      <textarea id="chat-input" rows="2" placeholder="예: 2주택인데 하나 팔면 중과되나요?" aria-label="질문 입력"></textarea>
+      <button type="submit" id="chat-send">보내기</button>
+    </form>
+    <p class="disclaimer" style="text-align:center">고객 이름·주민번호 같은 개인정보는 입력하지 마세요.</p>
+  </section>
+
   <!-- 변경사항 -->
   <section id="tab-updates" class="hidden">
     <div id="updates-body"></div>
@@ -125,6 +147,8 @@ mark{background:#ffe58a;color:inherit;border-radius:3px}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h0M8 15h2M12 15h2M8 18h2M12 18h4"/></svg>계산기</button>
   <button role="tab" data-tab="guide" aria-selected="false">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5M8 7h7M8 11h7"/></svg>세법 가이드</button>
+  <button role="tab" data-tab="chat" aria-selected="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></svg>질문하기</button>
   <button role="tab" data-tab="updates" aria-selected="false">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>변경사항</button>
 </nav>

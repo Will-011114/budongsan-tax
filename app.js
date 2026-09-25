@@ -32,7 +32,7 @@
   /* ───── 탭 ───── */
   document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => {
     document.querySelectorAll("nav.tabs button").forEach(x => x.setAttribute("aria-selected", x === b));
-    ["calc", "guide", "updates"].forEach(t => $("#tab-" + t).classList.toggle("hidden", t !== b.dataset.tab));
+    ["calc", "guide", "chat", "updates"].forEach(t => $("#tab-" + t).classList.toggle("hidden", t !== b.dataset.tab));
     window.scrollTo(0, 0);
   }));
 
@@ -223,6 +223,38 @@
       return `<div class="card upd ${plan ? "plan" : ""}"><div class="meta"><span class="badge">${esc(u.status)}</span><span>${esc(u.category)}</span><span style="color:var(--muted)">${esc(u.date)}</span></div>
       <h3>${esc(u.title)}</h3><p>${esc(u.body)}</p>${u.source ? `<a href="${esc(u.source)}" target="_blank" rel="noopener">출처 보기 ↗</a>` : ""}</div>`;
     }).join("");
+
+  /* ───── 질문하기 (챗봇) ───── */
+  let CHAT = { endpoint: "" };
+  try { CHAT = await load("data/chat-config.json"); } catch (e) {}
+  const log = $("#chat-log"), input = $("#chat-input"), send = $("#chat-send");
+  const history = [];
+  const bubble = (cls, text) => { const d = document.createElement("div"); d.className = "msg " + cls; d.textContent = text; log.appendChild(d); d.scrollIntoView({ block: "end", behavior: "smooth" }); return d; };
+  const SUGGEST = ["1주택자인데 12억 넘게 팔면 양도세 어떻게 계산돼요?", "조정대상지역 2주택 취득세는 얼마예요?", "올해 바뀐 부동산 세금 알려주세요", "일시적 2주택 비과세 요건이 뭐예요?"];
+  function intro() {
+    log.innerHTML = "";
+    bubble("bot", CHAT.endpoint ? "부동산 세금에 대해 궁금한 걸 편하게 물어보세요. 앱의 최신 세법 자료를 보고 답해 드려요." : "질문하기 기능은 준비 중이에요. 곧 열려요.");
+    if (!CHAT.endpoint) { input.disabled = send.disabled = true; return; }
+    const box = document.createElement("div"); box.className = "suggest";
+    SUGGEST.forEach(q => { const b = document.createElement("button"); b.type = "button"; b.textContent = q; b.onclick = () => { box.remove(); ask(q); }; box.appendChild(b); });
+    log.appendChild(box);
+  }
+  async function ask(q) {
+    bubble("user", q); history.push({ role: "user", text: q });
+    const w = bubble("bot wait", "답변을 준비하고 있어요…");
+    send.disabled = true;
+    try {
+      const r = await fetch(CHAT.endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history }) });
+      const d = await r.json().catch(() => ({}));
+      w.remove();
+      if (r.ok && d.text) { bubble("bot", d.text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/^#+\s*/gm, "")); history.push({ role: "assistant", text: d.text }); }
+      else { bubble("err", d.error || "답변을 받지 못했어요. 잠시 후 다시 시도해 주세요."); history.pop(); }
+    } catch (e) { w.remove(); bubble("err", "인터넷 연결을 확인해 주세요."); history.pop(); }
+    send.disabled = false;
+  }
+  $("#chat-form").addEventListener("submit", e => { e.preventDefault(); const q = input.value.trim(); if (!q || send.disabled) return; input.value = ""; ask(q); });
+  input.addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey && !e.isComposing) { e.preventDefault(); $("#chat-form").requestSubmit(); } });
+  intro();
 
   if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
