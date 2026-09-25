@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "version": "2026.09.25",
+    "basis": "2026년 9월 25일 시행 법령 기준",
+    "note": "모든 금액은 원 단위. 세율은 소수(0.06 = 6%). 이 파일만 고치면 앱의 계산기가 자동으로 바뀝니다."
+  },
+
+  "adjustedAreas": {
+    "asOf": "2025-10-16 지정 (2025.10.15 대책)",
+    "list": [
+      "서울 25개 자치구 전역",
+      "경기 과천시", "경기 광명시", "경기 의왕시", "경기 하남시",
+      "경기 성남시 분당구", "경기 성남시 수정구", "경기 성남시 중원구",
+      "경기 수원시 영통구", "경기 수원시 장안구", "경기 수원시 팔달구",
+      "경기 안양시 동안구", "경기 용인시 수지구"
+    ],
+    "source": "https://www.korea.kr/news/policyNewsView.do?newsId=148950973"
+  },
+
+  "capitalGains": {
+    "basicDeduction": 2500000,
+    "localTaxRate": 0.1,
+    "brackets": [
+      { "upTo": 14000000,   "rate": 0.06, "deduct": 0 },
+      { "upTo": 50000000,   "rate": 0.15, "deduct": 1260000 },
+      { "upTo": 88000000,   "rate": 0.24, "deduct": 5760000 },
+      { "upTo": 150000000,  "rate": 0.35, "deduct": 15440000 },
+      { "upTo": 300000000,  "rate": 0.38, "deduct": 19940000 },
+      { "upTo": 500000000,  "rate": 0.40, "deduct": 25940000 },
+      { "upTo": 1000000000, "rate": 0.42, "deduct": 35940000 },
+      { "upTo": null,       "rate": 0.45, "deduct": 65940000 }
+    ],
+    "shortTermHousing": { "under1y": 0.70, "under2y": 0.60 },
+    "oneHouseExemption": {
+      "highValueLine": 1200000000,
+      "minHoldingYears": 2,
+      "minResidenceYearsIfAcquiredInAdjusted": 2
+    },
+    "surcharge": {
+      "active": true,
+      "since": "2026-05-10",
+      "twoHouses": 0.20,
+      "threePlus": 0.30,
+      "excludesLongTermDeduction": true
+    },
+    "longTermDeduction": {
+      "general": { "minYears": 3, "ratePerYear": 0.02, "max": 0.30 },
+      "oneHouse": {
+        "holding":   { "minYears": 3, "ratePerYear": 0.04, "max": 0.40 },
+        "residence": { "minYears": 2, "ratePerYear": 0.04, "max": 0.40 }
+      }
+    },
+    "sources": [
+      "https://www.law.go.kr/법령/소득세법",
+      "https://www.korea.kr/news/policyNewsView.do?newsId=148963387"
+    ]
+  },
+
+  "acquisition": {
+    "standard": {
+      "lowLine": 600000000,
+      "highLine": 900000000,
+      "lowRate": 0.01,
+      "highRate": 0.03
+    },
+    "heavy": { "eight": 0.08, "twelve": 0.12 },
+    "educationTax": { "standardFactor": 0.1, "heavyRate": 0.004 },
+    "ruralTaxOver85": { "standard": 0.002, "eight": 0.006, "twelve": 0.010 },
+    "firstHome": { "maxPrice": 1200000000, "maxReduction": 2000000 },
+    "sources": [
+      "https://www.law.go.kr/법령/지방세법",
+      "https://www.law.go.kr/법령/지방세특례제한법"
+    ]
+  },
+
+  "propertyTax": {
+    "marketRatio": {
+      "oneHouse": [
+        { "upTo": 300000000, "ratio": 0.43 },
+        { "upTo": 600000000, "ratio": 0.44 },
+        { "upTo": null,      "ratio": 0.45 }
+      ],
+      "other": 0.60
+    },
+    "standardBrackets": [
+      { "upTo": 60000000,  "rate": 0.0010, "base": 0 },
+      { "upTo": 150000000, "rate": 0.0015, "base": 60000 },
+      { "upTo": 300000000, "rate": 0.0025, "base": 195000 },
+      { "upTo": null,      "rate": 0.0040, "base": 570000 }
+    ],
+    "oneHouseSpecial": {
+      "maxPublicPrice": 900000000,
+      "brackets": [
+        { "upTo": 60000000,  "rate": 0.0005, "base": 0 },
+        { "upTo": 150000000, "rate": 0.0010, "base": 30000 },
+        { "upTo": 300000000, "rate": 0.0020, "base": 120000 },
+        { "upTo": null,      "rate": 0.0035, "base": 420000 }
+      ]
+    },
+    "urbanAreaRate": 0.0014,
+    "educationTaxFactor": 0.2,
+    "sources": [
+      "https://taxtimes.co.kr/mobile/article.html?no=274811",
+      "https://www.law.go.kr/법령/지방세법"
+    ]
+  },
+
+  "comprehensive": {
+    "deductionOneHouse": 1200000000,
+    "deductionGeneral": 900000000,
+    "marketRatio": 0.60,
+    "brackets": [
+      { "upTo": 300000000,  "rate": 0.005, "rateHeavy": 0.005 },
+      { "upTo": 600000000,  "rate": 0.007, "rateHeavy": 0.007 },
+      { "upTo": 1200000000, "rate": 0.010, "rateHeavy": 0.010 },
+      { "upTo": 2500000000, "rate": 0.013, "rateHeavy": 0.020 },
+      { "upTo": 5000000000, "rate": 0.015, "rateHeavy": 0.030 },
+      { "upTo": 9400000000, "rate": 0.020, "rateHeavy": 0.040 },
+      { "upTo": null,       "rate": 0.027, "rateHeavy": 0.050 }
+    ],
+    "heavyMinHouses": 3,
+    "heavyMinBase": 1200000000,
+    "ruralTaxFactor": 0.2,
+    "oneHouseCredit": {
+      "age":     [ { "min": 70, "rate": 0.40 }, { "min": 65, "rate": 0.30 }, { "min": 60, "rate": 0.20 } ],
+      "holding": [ { "min": 15, "rate": 0.50 }, { "min": 10, "rate": 0.40 }, { "min": 5,  "rate": 0.20 } ],
+      "max": 0.80
+    },
+    "sources": [
+      "https://www.law.go.kr/법령/종합부동산세법"
+    ]
+  },
+
+  "brokerage": {
+    "sale": [
+      { "under": 50000000,   "rate": 0.006, "cap": 250000 },
+      { "under": 200000000,  "rate": 0.005, "cap": 800000 },
+      { "under": 900000000,  "rate": 0.004, "cap": null },
+      { "under": 1200000000, "rate": 0.005, "cap": null },
+      { "under": 1500000000, "rate": 0.006, "cap": null },
+      { "under": null,       "rate": 0.007, "cap": null }
+    ],
+    "lease": [
+      { "under": 50000000,   "rate": 0.005, "cap": 200000 },
+      { "under": 100000000,  "rate": 0.004, "cap": 300000 },
+      { "under": 600000000,  "rate": 0.003, "cap": null },
+      { "under": 1200000000, "rate": 0.004, "cap": null },
+      { "under": 1500000000, "rate": 0.005, "cap": null },
+      { "under": null,       "rate": 0.006, "cap": null }
+    ],
+    "monthlyMultiplier": 100,
+    "monthlyMultiplierSmall": 70,
+    "smallLine": 50000000,
+    "officetel": { "sale": 0.005, "lease": 0.004 },
+    "otherMax": 0.009,
+    "vat": 0.1,
+    "sources": [
+      "https://www.law.go.kr/법령/공인중개사법시행규칙"
+    ]
+  }
+}
