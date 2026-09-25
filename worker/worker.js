@@ -65,7 +65,7 @@ export default {
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: system }] },
           contents: history,
-          generationConfig: { temperature: 0.2, maxOutputTokens: 1500 },
+          generationConfig: { temperature: 0.2, maxOutputTokens: 8192 },
         }),
       });
       if (r.ok) {
