@@ -228,11 +228,24 @@
   let CHAT = { endpoint: "" };
   try { CHAT = await load("data/chat-config.json"); } catch (e) {}
   const log = $("#chat-log"), input = $("#chat-input"), send = $("#chat-send");
-  const history = [];
+  // 대화 기록은 이 폰에만 저장 (앱을 껐다 켜도 유지, 최근 60개까지)
+  const STORE = "sejeum-chat-v1";
+  const clean = (t) => t.replace(/\*\*(.+?)\*\*/g, "$1").replace(/^#+\s*/gm, "");
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(STORE) || "[]"); if (!Array.isArray(history)) history = []; } catch (e) { history = []; }
+  const save = () => { try { localStorage.setItem(STORE, JSON.stringify(history.slice(-60))); } catch (e) {} };
   const bubble = (cls, text) => { const d = document.createElement("div"); d.className = "msg " + cls; d.textContent = text; log.appendChild(d); d.scrollIntoView({ block: "end", behavior: "smooth" }); return d; };
   const SUGGEST = ["1주택자인데 12억 넘게 팔면 양도세 어떻게 계산돼요?", "조정대상지역 2주택 취득세는 얼마예요?", "올해 바뀐 부동산 세금 알려주세요", "일시적 2주택 비과세 요건이 뭐예요?"];
   function intro() {
     log.innerHTML = "";
+    if (CHAT.endpoint && history.length) {
+      const bar = document.createElement("div"); bar.className = "chat-bar";
+      const nb = document.createElement("button"); nb.type = "button"; nb.textContent = "새 대화 시작";
+      nb.onclick = () => { if (confirm("이전 대화를 지우고 새로 시작할까요?")) { history = []; save(); intro(); } };
+      bar.appendChild(nb); log.appendChild(bar);
+      history.forEach(m => bubble(m.role === "user" ? "user" : "bot", m.role === "user" ? m.text : clean(m.text)));
+      return;
+    }
     bubble("bot", CHAT.endpoint ? "부동산 세금에 대해 궁금한 걸 편하게 물어보세요. 앱의 최신 세법 자료를 보고 답해 드려요." : "질문하기 기능은 준비 중이에요. 곧 열려요.");
     if (!CHAT.endpoint) { input.disabled = send.disabled = true; return; }
     const box = document.createElement("div"); box.className = "suggest";
@@ -240,7 +253,7 @@
     log.appendChild(box);
   }
   async function ask(q) {
-    bubble("user", q); history.push({ role: "user", text: q });
+    bubble("user", q); history.push({ role: "user", text: q }); save();
     const w = bubble("bot wait", "답변을 준비하고 있어요…");
     send.disabled = true;
     try {
@@ -249,9 +262,9 @@
       const r = await fetch(CHAT.endpoint, { method: "POST", signal: ctrl.signal, headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history }) }).finally(() => { clearTimeout(tm); clearTimeout(slow); });
       const d = await r.json().catch(() => ({}));
       w.remove();
-      if (r.ok && d.text) { bubble("bot", d.text.replace(/\*\*(.+?)\*\*/g, "$1").replace(/^#+\s*/gm, "")); history.push({ role: "assistant", text: d.text }); }
-      else { bubble("err", d.error || "답변을 받지 못했어요. 잠시 후 다시 시도해 주세요."); history.pop(); }
-    } catch (e) { w.remove(); bubble("err", e.name === "AbortError" ? "답변이 너무 오래 걸려서 멈췄어요. 잠시 후 다시 물어봐 주세요." : "인터넷 연결을 확인해 주세요."); history.pop(); }
+      if (r.ok && d.text) { bubble("bot", clean(d.text)); history.push({ role: "assistant", text: d.text }); save(); }
+      else { bubble("err", d.error || "답변을 받지 못했어요. 잠시 후 다시 시도해 주세요."); history.pop(); save(); }
+    } catch (e) { w.remove(); bubble("err", e.name === "AbortError" ? "답변이 너무 오래 걸려서 멈췄어요. 잠시 후 다시 물어봐 주세요." : "인터넷 연결을 확인해 주세요."); history.pop(); save(); }
     send.disabled = false;
   }
   $("#chat-form").addEventListener("submit", e => { e.preventDefault(); const q = input.value.trim(); if (!q || send.disabled) return; input.value = ""; ask(q); });
