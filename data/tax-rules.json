@@ -1,20 +1,25 @@
 {
   "meta": {
-    "version": "2026.09.25",
-    "basis": "2026년 9월 25일 시행 법령 기준",
+    "version": "2026.11.11",
+    "basis": "2026년 11월 11일 시행 법령 기준",
     "note": "모든 금액은 원 단위. 세율은 소수(0.06 = 6%). 이 파일만 고치면 앱의 계산기가 자동으로 바뀝니다."
   },
 
   "adjustedAreas": {
-    "asOf": "2025-10-16 지정 (2025.10.15 대책)",
+    "asOf": "2025-10-16 지정 (2025.10.15 대책) + 2026-07-01 추가 지정 (동탄구·기흥구·구리시)",
     "list": [
       "서울 25개 자치구 전역",
       "경기 과천시", "경기 광명시", "경기 의왕시", "경기 하남시",
       "경기 성남시 분당구", "경기 성남시 수정구", "경기 성남시 중원구",
       "경기 수원시 영통구", "경기 수원시 장안구", "경기 수원시 팔달구",
-      "경기 안양시 동안구", "경기 용인시 수지구"
+      "경기 안양시 동안구", "경기 용인시 수지구",
+      "경기 화성시 동탄구", "경기 용인시 기흥구", "경기 구리시"
     ],
-    "source": "https://www.korea.kr/news/policyNewsView.do?newsId=148950973"
+    "source": "https://www.korea.kr/news/policyNewsView.do?newsId=148950973",
+    "sources": [
+      "https://www.korea.kr/news/policyNewsView.do?newsId=148950973",
+      "https://www.korea.kr/news/policyNewsView.do?newsId=148967354"
+    ]
   },
 
   "capitalGains": {
